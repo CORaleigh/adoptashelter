@@ -1,5 +1,5 @@
 # adoptashelter
-City of Raleigh Shelter Adoption app  
+City of Raleigh Shelter Adoption app created with JavaScript, Bootstrap, and jQuery. 
 ##Requirements
 1. [PostgreSQL](https://www.postgresql.org) database with [PostGIS](http://www.postgis.net) extension  
 2. [PHP](https://www.php.net) with [PDO PostgresSQL](http://php.net/manual/en/ref.pdo-pgsql.php) extension  
