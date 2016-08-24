@@ -1,0 +1,220 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+    	<meta charset="utf-8">
+	    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<title>Adopt-A-Shelter</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+		<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7/leaflet.css" />
+		<!-- Latest compiled and minified CSS -->
+		<link rel="stylesheet" href="css/bootstrap.min.css">
+
+		<!-- Optional theme -->
+		<link rel="stylesheet" href="css/bootstrap-theme.min.css">
+		<link rel="stylesheet" href="css/typeahead.js-bootstrap.css"/>
+		<link rel="stylesheet" href="css/main.css"/>
+
+	    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+	    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+	    <!--[if lt IE 9]>
+	      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+	      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+	    <![endif]-->
+        <script>
+          (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+          (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+          })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+          ga('create', 'UA-11110258-22', 'raleighnc.gov');
+          ga('send', 'pageview');
+
+        </script>	    
+	</head>
+	<body>
+	  	<div class="navbar navbar-default" role="banner">
+	  		<div class="container">
+	  			<div class="navbar-header">
+	  				<button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target=".bs-navbar-collapse">
+	  					<span class="sr-only">Toggle navigation</span>
+	  					<span class="icon-bar"></span>
+	  					<span class="icon-bar"></span>
+	  					<span class="icon-bar"></span>
+	  				</button>
+	  				<a href="http://www.raleighnc.gov/" target="_blank"><img  id="headerSeal" src="img/City-Seal-BW.png" class="pull-left hidden-sm hidden-md hidden-lg" /></a>
+	  				<a href="http://www.raleighnc.gov/services/content/PWksTransit/Articles/CapitalAreaTransit.html" target="_blank"><img id="catLogo" src="img/goraleigh30.png" class="pull-left" /></a>
+	  				<a class="navbar-brand" href="http://www.raleighnc.gov/services/content/PWksTransit/Articles/AdoptAShelter.html" target="_blank">Adopt-A-Shelter</a>
+	  			</div>
+	  			<div class="navbar-collapse bs-navbar-collapse collapse" role="navigation">
+	  				<ul class="nav navbar-nav navbar-right">
+	  					<li><input id="searchInput" class="typeahead form-control" type="text" placeholder="222 West Hargett Street">
+	  					</li>
+	  					<li><a href="javascript:void(0)" data-toggle='modal' data-target='#feedback-modal' >Feedback</a></li>
+	  					<li><a href="javascript:void(0)" data-toggle='modal' data-target='#about-modal' >About</a></li>
+	  				</ul>
+	  			</div>
+	  		</div>
+	  	</div>
+	  	<div class="jumbotron hidden-xs">
+	  		<div class="header row">
+	  			<div class="col-sm-6">
+		  		<h2>Adopt-A-Shelter</h2>
+		  		<span>Click on a green marker on the map to adopt a bus shelter.</span>
+		  		</div>
+		  		<div class="col-sm-2">
+		  		</div>
+		  		<div class="col-sm-4">
+		  			<a href="http://www.raleighnc.gov/" target="_blank">
+		  				<img class="pull-right" src="img/City-Seal-white.png"/>
+		  			</a>
+		  		</div>
+	  		</div>
+	  	</div>
+	  	<div id="map"></div>
+	  	<div id="adopt-modal" class="modal fade">
+	  		<div class="modal-dialog">
+	  			<div class="modal-content">
+	  				<div class="modal-header">
+	  					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+	  					<h4 class="modal-title" id="myModalLabel">Adopt This Shelter</h4>
+	  				</div>
+	  				<div class="modal-body">
+	  					<form id="form-adopt" role="form" action="javascript:void(0)">
+	  						<div class="form-group">
+	  							<label for="inputEmail">Email</label>
+	  							<input type="email" class="form-control" id="inputEmail" name="email" placeholder="Enter email">
+	  							<p class="help-block"></p>
+	  						</div>
+	  						<div class="form-group">
+	  							<label for="inputPhone">Phone</label>
+	  							<input type="text" class="form-control" id="inputPhone" name="phone" placeholder="Enter phone number">
+	  							<p class="help-block"></p>
+	  						</div>
+	  						<div class="form-group">
+	  							<label for="inputName">Contact Person</label>
+	  							<input type="text" class="form-control" id="inputName" name="contact" placeholder="Enter contact name">
+	  							<p class="help-block"></p>
+	  						</div>
+	  						<div class="form-group">
+	  							<label for="inputOrg">Organization/Individual (Name to Appear on Decal)</label>
+	  							<input type="text" class="form-control" id="inputOrg" name="organization" placeholder="Enter organization">
+	  							<p class="help-block"></p>
+	  						</div>
+	  						<input type="text" style="display:none" id="inputId" name="id"/>
+	  						<div class="checkbox">
+	  							<label>
+	  								<input id="termsCheck" type="checkbox">I agree to the following
+	  								<a href="javascript:void(0)" data-toggle='modal' data-target='#terms-modal'>Terms &amp; Conditions</a>
+	  							</input>
+	  						</label>
+	  					</div>
+	  					<button id="submitButton" class="btn btn-default disabled">Submit</button>
+	  				</form>
+	  				<p><div id="adopt-alert" class="alert alert-danger" style="display:none">
+	  					<span id="alert-message"></span>
+	  				</div></p>
+	  			</div>
+	  		</div>
+	  	</div>
+	  </div>
+
+	  <div id="feedback-modal" class="modal fade">
+	  	<div class="modal-dialog">
+	  		<div class="modal-content">
+	  			<div class="modal-header">
+	  				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+	  				<h4 class="modal-title">Feedback</h4>
+	  			</div>
+	  			<div class="modal-body">
+	  				<form role="form" action="javascript:void(0)">
+	  					<div class="form-group">
+	  						<label for="feedbackEmail">Email address</label>
+	  						<input type="email" class="form-control" id="feedbackEmail" name="feedbackEmail" placeholder="Enter email">
+	  						<p class="help-block"></p>
+	  					</div>
+	  					<div class="form-group">
+	  						<label for="inputComments">Comments</label>
+	  						<textarea rows="6" class="form-control" id="inputComments" name="comments" placeholder="Enter your feedback or comments"></textarea>
+	  						<p class="help-block"></p>
+	  					</div>
+	  					<button id="feedbackSubmit" class="btn btn-default disabled">Submit</button>
+	  				</form>
+	  			</div>
+	  		</div>
+	  	</div>
+	  </div>
+
+	  <div id="about-modal" class="modal fade">
+	  	<div class="modal-dialog">
+	  		<div class="modal-content">
+	  			<div class="modal-header">
+	  				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+	  				<h4 class="modal-title">About</h4>
+	  			</div>
+	  			<div class="modal-body">
+	  				<p>Developed by the City of Raleigh's Geographic Information Services division using open source technology.</p>
+	  				<p>Developed for GoRaleigh.</p>
+	  			</div>
+	  		</div>
+	  	</div>
+		  </div>
+		  <div id="splash-modal" class="modal fade">
+		  	<div class="modal-dialog">
+		  		<div class="modal-content">
+	<!-- 		  			<div class="modal-header">
+		  				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+		  				<h4 class="modal-title">About</h4>
+		  			</div> -->
+		  			<div class="modal-body">
+		  				<p>Adopt-A-Shelter is a program that helps businesses, individuals, community organizations and schools make a real difference in their neighborhoods by "adopting" local bus shelters. An adopter, whether it's an individual or a group, assists by removing trash in and around the shelter area on a monthly basis. You also assist by alerting Transit Staff to special maintenance needs and reporting vandalism or suspicious activity.</p>
+		  				<p>View the map for shelters available for adoption or visit the <a href="http://www.raleighnc.gov/services/content/PWksTransit/Articles/AdoptAShelter.html" target="_blank">Adopt-A-Shelter Program</a> webpage for more information.</p>
+
+		  				<div class="text-center"><button class="btn btn-success" data-dismiss="modal">Continue</button></div>
+		  				<center><div class="checkbox" style="max-width:150px"><label><input type="checkbox">Do not display again</label></div></center>
+		  				<div class="row well">
+		  					<h5 class="text-center">Map Key</h5>
+							<div class="col-sm-6 text-center"><p><img src="img/marker-icon-green.png" style="margin-right:10px" />Available Shelter</p></div>
+							<div class="col-sm-6 text-center"><p><img src="img/marker-icon-red.png" style="margin-right:10px" />Adopted Shelter</p></div>
+						</div>
+		  			</div>
+		  		</div>
+		  	</div>
+		  </div>
+		  <div id="terms-modal" class="modal fade">
+	  	<div class="modal-dialog">
+	  		<div class="modal-content">
+	  			<div class="modal-header">
+	  				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+	  				<h4 class="modal-title">Terms &amp; Conditions</h4>
+	  			</div>
+	  			<div class="modal-body">
+	  				<span>The minimum responsibilities that accompany the adoption of a bus shelter are as follows:</span>
+	  				<ol>
+	  					<li>Participant agrees to adopt a bus shelter for one year. After one year, if both parties agree, agreement may be extended for an additional year.  Participant may adopt a maximum of three shelters</li>
+	  					<li>Participant agrees to maintain the adopted bus shelter on a monthly basis by being responsible for the following:</li>
+	  					<ol>
+	  						<li>Remove trash around the shelter and bus stop area.</li>
+	  						<li>Report shelter damage or special maintenance needs to Transit Staff at catinfo@raleighnc.gov.</li>
+	  						<li>Report any signs of graffiti at the bus shelter area to Transit Staff at catinfo@raleighnc.gov.</li>
+	  						<li>Report any signs of criminal behavior and/or suspicious packages in or around the shelter area to the Raleigh Police Department at (919) 996-3335.</li>
+	  					</ol>
+	  					<li>The City will provide one decal per site per 12 month adoption period.  Replacement decals provided at the expense of the adoptee.  The City will also provide cleaning supplies per 12 month adoption period, including disposable gloves, trash bags and (2) safety vests for participation to use while maintaining the shelter area.</li>
+	  				</li>
+	  			</ol>
+	  		</div>
+	  		<div class="modal-footer">
+	  			<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	  		</div>
+	  	</div>
+	  </div>
+
+	  <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+	  <script src="js/jquery.validate.min.js"></script>
+	  <!-- Latest compiled and minified JavaScript -->
+	  <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
+	  <script src="js/typeahead.min.js"></script>
+
+	  <script src="http://cdn.leafletjs.com/leaflet-0.7/leaflet.js"></script>
+	  <script src="js/main.js"></script>
+	</body>
+</html>
